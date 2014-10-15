@@ -296,6 +296,15 @@ void xAna_Zgg_what(Int_t MC_N, Int_t MC, Int_t WP=1) {
 	mu1.SetPtEtaPhiM(muPt[acc_mu[i]], muEta[acc_mu[i]], muPhi[acc_mu[i]], 0.1057);
 	mu2.SetPtEtaPhiM(muPt[acc_mu[j]], muEta[acc_mu[j]], muPhi[acc_mu[j]], 0.1057);
 	
+	Int_t check_muMC = 0;                                                                                                      
+        for(int imc = 0; imc < nMC; ++imc){                                                                                        
+          if (fabs(mcPID[imc]) != 13) continue;                                                                                    
+          if (deltaR(mcEta[imc], mcPhi[imc], muEta[acc_mu[i]], muPhi[acc_mu[i]]) > 0.3) continue;                                  
+          if (deltaR(mcEta[imc], mcPhi[imc], muEta[acc_mu[j]], muPhi[acc_mu[j]]) > 0.3) continue;                                  
+          check_muMC = 1;                                                                                                          
+        }                                                                                                                          
+        if (check_muMC!=1) continue;
+        
 	float qter = 1.0;
 	if(data.HasMC()) {
 	  rmcor->momcor_mc(mu1, muCharge[acc_mu[i]], runopt, qter); 
